@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: Countdown-Mastobot
+spec:
+  schedule: "0 12 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: countdown-mastobot
+            image: ghcr.io/magsol/countdown-mastobot:latest
+            imagePullPolicy: IfNotPresent
+            envFrom:
+              - secretRef:
+                name: mastodon-credentials
+          restartPolicy: OnFailure
