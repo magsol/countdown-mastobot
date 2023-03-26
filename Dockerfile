@@ -1,5 +1,9 @@
 FROM continuumio/miniconda3:latest
 
+LABEL org.opencontainers.image.source=https://github.com/magsol/countdown-mastobot
+LABEL org.opencontainers.image.description="Countdown Mastobot image"
+LABEL org.opencontainers.image.licenses=MIT
+
 RUN apt-get update && apt-get -y upgrade && \
     apt-get install -y git && \
     conda update -y --all && \
