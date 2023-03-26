@@ -4,7 +4,7 @@ channels:
   - defaults
 dependencies:
   - python=3.9
-  - mastodon.py
+  - mastodon.py=1.8.0
   - pip
   - pip:
-    - simple_image_download
+    - simple_image_download==0.5
