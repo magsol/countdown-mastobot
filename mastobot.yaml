@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: countdown-mastobot
-            image: ghcr.io/magsol/countdown-mastobot:latest
+            image: ghcr.io/magsol/countdown_mastobot:latest
             imagePullPolicy: IfNotPresent
             envFrom:
               - secretRef:
