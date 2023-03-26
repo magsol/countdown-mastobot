@@ -4,5 +4,5 @@
 
 docker buildx build \
     --platform linux/arm64,linux/amd64 \
-    -t countdown-mastobot \
+    -t ghcr.io/magsol/countdown_mastobot:latest \
     .
