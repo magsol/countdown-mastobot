@@ -1,0 +1,10 @@
+name: countdown-mastobot
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - mastodon.py
+  - pip
+  - pip:
+    - simple_image_download
