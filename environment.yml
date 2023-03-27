@@ -2,8 +2,11 @@ name: base
 channels:
   - conda-forge
 dependencies:
-  - python=3.9.16
+  - python=3.9
   - mastodon.py=1.8.0
+  - requests
+  - progressbar
   - pip
   - pip:
-    - simple_image_download==0.5
+    - python-magic==0.4.27
+    - simple-image-download==0.5
