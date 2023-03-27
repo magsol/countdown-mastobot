@@ -45,17 +45,28 @@ if __name__ == "__main__":
 
     with open(args.imagefile, "r") as fp:
         images = fp.readlines()
-    image_id = random.randint(0, len(images) - 1)
-    image = images[image_id]
+    attempts = 0
+    mime_types = ("jpeg", "png")
+    while attempts < len(images):
+        image_id = random.randint(0, len(images) - 1)
+        image = images[image_id]
+        attempts += 1
+
+        if image.split(".")[-1] in mime_types: break
     #print(image)
 
     ### Step 3: make the post
     # https://mastodonpy.readthedocs.io/en/stable/05_statuses.html#writing
 
     # First, post the media.
-    media = m.media_post(image)
+    mime_type = image.split(".")[-1]
+    media = None
+    if mime_type in mime_types:
+        media = m.media_post(image, mime_type = f"image/{mime_type}")
     # Then, post the update.
-    post = m.status_post(f"{dt} days until Tears of the Kingdom.", media_ids = media, sensitive = True)
+    post = m.status_post(f"{dt} days until Tears of the Kingdom.", 
+                         media_ids = media, 
+                         sensitive = True if media is not None else False)
 
     ### All done!
     print("Posted! Quitting.")
