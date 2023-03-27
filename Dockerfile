@@ -1,22 +1,29 @@
-FROM continuumio/miniconda3:latest
+FROM mambaorg/micromamba:1.4.0-bullseye-slim
 
 LABEL org.opencontainers.image.source=https://github.com/magsol/countdown-mastobot
 LABEL org.opencontainers.image.description="Countdown Mastobot image"
 LABEL org.opencontainers.image.licenses=MIT
 
-RUN apt-get update && apt-get -y upgrade && \
-    apt-get install -y git && \
-    conda update -y --all && \
-    conda install -y pip && \
-    conda install -c conda-forge python=3.9 mastodon.py=1.8.0 && \
-    pip install simple_image_download==0.5
+USER root
 
-RUN mkdir /app && cd /app && \
-    git clone https://github.com/magsol/countdown-mastobot && \
+# First, upgrade the OS.
+RUN apt-get update && \
+    apt-get -y upgrade && \
+    apt-get install -y libmagic1 git
+
+USER $MAMBA_USER
+WORKDIR /tmp
+
+# # Next, check out the repo.
+RUN git clone https://github.com/magsol/countdown-mastobot && \
     cd countdown-mastobot && chmod +x mastobot.sh
+ENV PIP_NO_DEPS=1
 
-# Keep us here.
-WORKDIR /app/countdown-mastobot
+# Next, follow instructions here:
+# https://hub.docker.com/r/mambaorg/micromamba#quick-start
+RUN micromamba install -y -n base -f /tmp/countdown-mastobot/environment.yml && \
+    micromamba clean --all --yes
 
 # Execute!
+WORKDIR /tmp/countdown-mastobot
 CMD ["/bin/bash", "-c", "mastobot.sh"]
