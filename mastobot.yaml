@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: Countdown-Mastobot
+  name: countdown-mastobot
   namespace: mastobot
 spec:
   schedule: "0 12 * * *"
@@ -15,5 +15,5 @@ spec:
             imagePullPolicy: IfNotPresent
             envFrom:
               - secretRef:
-                name: mastodon-credentials
+                  name: mastodon-credentials
           restartPolicy: OnFailure
