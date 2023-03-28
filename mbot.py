@@ -28,12 +28,19 @@ if __name__ == "__main__":
     ### Step 0: first, make sure we haven't yet tooted today
     # (juuuust in case this gets run multiple times in one day)
     # https://mastodonpy.readthedocs.io/en/stable/07_timelines.html#mastodon.Mastodon.timeline
-    toots = m.timeline_home(limit = 1)
-    ts = toots[0]['created_at'].astimezone(tz = datetime.now(timezone.utc).astimezone().tzinfo)
+    toots = m.timeline_home(limit = 5)
     now = datetime.now()
-    if ts.year == now.year and ts.month == now.month and ts.day == now.day:
-        print("Already made a post today! Quitting.")
-        quit()
+    for toot in toots:
+        ts = toot['created_at'].astimezone(tz = datetime.now(timezone.utc).astimezone().tzinfo)
+        if ts.year == now.year and ts.month == now.month and ts.day == now.day:
+            # We found a toot that happened today, but was it posted by
+            # this application?
+            if toot['application'] is not None:
+                print(f"Already posted today: {toot['url']}\nQuitting!")
+                quit()
+            print(f"We've posted today, but manually: {toot['url']}")
+    # Reaching this point means this specific app's last toot was either
+    # yesterday OR not in the last 5 toots (admittedly not perfect).
     
     ### Step 1: need to determine how many days out we are!
     target = datetime(year = 2023, month = 5, day = 12)
@@ -60,7 +67,7 @@ if __name__ == "__main__":
                 images_final.append(image)
     image_id = random.randint(0, len(images_final) - 1)
     image = images_final[image_id]
-    print(image)
+    print(f"Image found: {image}")
 
     ### Step 3: make the post
     # https://mastodonpy.readthedocs.io/en/stable/05_statuses.html#writing
@@ -73,4 +80,4 @@ if __name__ == "__main__":
                          sensitive = True if media is not None else False)
 
     ### All done!
-    print("Posted! Quitting.")
+    print(f"NEW TOOT: {toot['url']}\nFIN (for today).")
