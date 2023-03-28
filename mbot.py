@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # cause issues. So until we completely overhaul the image
     # download part, this seems like the most reliable.
     with open(args.imagefile, "r") as fp:
-        images_initial = fp.readlines()
+        images_initial = list(map(lambda x: x.strip(), fp.readlines()))
     images_final = []
     for image in images_initial:
         if image.endswith("jpeg") or image.endswith("png"):
