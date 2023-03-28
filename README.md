@@ -22,7 +22,6 @@ You'll need to make sure you have a compatible Python environment. An environmen
 
  1. Install [conda](https://docs.conda.io/en/latest/) or [mamba](https://mamba.readthedocs.io/en/latest/)
  2. Run `conda create -f environment.yml`
- 3. Activate the environment with `conda activate countdown-mastobot`
 
 Next, edit the `mastobot.sh` and add your Mastodon credentials to the file (the ones you obtained in "0: Prerequisites" above).
 
@@ -41,7 +40,7 @@ You'll still need to go through the process in "1: Manually" of installing and c
 After that, you'll run `crontab -e` to bring up the crontab editor. If you've never used cron before, you may want to brush up using [one](https://www.tutorialspoint.com/unix_commands/crontab.htm) [of](https://www.hostinger.com/tutorials/cron-job) [numerous](https://linuxhint.com/cron_jobs_complete_beginners_tutorial/) [tutorials](https://ostechnix.com/a-beginners-guide-to-cron-jobs/) [available](https://linuxconfig.org/using-cron-scheduler-on-linux-systems). Two things to consider:
 
  1. **Frequency**. The bot is designed to run once per day, though it has provisions to ensure it doesn't happen *more* often than that. So a frequency of something like `0 12 * * *` will run once per day at noon (this is the frequency provided in `mastobot.yaml` for the kubernetes configuration below).
- 2. **Command**. You may want to include two commands: one to switch to the custom conda environment, the second to actually run the bot. This would look something like `conda activate countdown-mastobot && /path/to/mastobot.sh`.
+ 2. **Command**. This would look something like `/bin/bash /path/to/mastobot.sh` (note the space in there between the `bash` command and the script itself).
 
 ### 3: Kubernetes
 
@@ -64,6 +63,7 @@ You'll run this command three times, one for each of the three values, with the 
 Then, you'll run:
 
 ```
+> kubectl create namespace mastobot
 > kubectl apply -f mastobot-credentials.yaml
 > kubectl apply -f mastobot.yaml
 ```
