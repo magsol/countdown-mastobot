@@ -4,6 +4,7 @@ import os.path
 import random
 
 from mastodon import Mastodon
+from PIL import Image
 
 API_URL = "quinnwitz.house"
 
@@ -43,26 +44,29 @@ if __name__ == "__main__":
     # https://mastodonpy.readthedocs.io/en/stable/05_statuses.html#mastodon.Mastodon.media_post
     # https://mastodonpy.readthedocs.io/en/stable/02_return_values.html#media-dict
 
+    # This is annoying, as simple-image-download seems to
+    # pick out some common icons by Google Images and treats
+    # them as part of the dataset. They're small, usually
+    # 80x36, but they and other exotic image formats seem to
+    # cause issues. So until we completely overhaul the image
+    # download part, this seems like the most reliable.
     with open(args.imagefile, "r") as fp:
-        images = fp.readlines()
-    attempts = 0
-    mime_types = ("jpeg", "png")
-    while attempts < len(images):
-        image_id = random.randint(0, len(images) - 1)
-        image = images[image_id]
-        attempts += 1
-
-        if image.split(".")[-1] in mime_types: break
-    #print(image)
+        images_initial = fp.readlines()
+    images_final = []
+    for image in images_initial:
+        if image.endswith("jpeg") or image.endswith("png"):
+            im = Image.open(image)
+            if im.size[0] > 1000:
+                images_final.append(image)
+    image_id = random.randint(0, len(images_final) - 1)
+    image = images_final[image_id]
+    print(image)
 
     ### Step 3: make the post
     # https://mastodonpy.readthedocs.io/en/stable/05_statuses.html#writing
 
     # First, post the media.
-    mime_type = image.split(".")[-1]
-    media = None
-    if mime_type in mime_types:
-        media = m.media_post(image, mime_type = f"image/{mime_type}")
+    media = m.media_post(image)
     # Then, post the update.
     post = m.status_post(f"{dt} days until Tears of the Kingdom.", 
                          media_ids = media, 
