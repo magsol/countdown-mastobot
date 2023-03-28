@@ -25,5 +25,4 @@ RUN micromamba install -y -n base -f /tmp/countdown-mastobot/environment.yml && 
     micromamba clean --all --yes
 
 # Execute!
-WORKDIR /tmp/countdown-mastobot
-CMD ["/bin/bash", "-c", "mastobot.sh"]
+CMD ["/bin/bash", "-c", "/tmp/countdown-mastobot/mastobot.sh"]
