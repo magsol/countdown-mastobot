@@ -6,6 +6,7 @@ dependencies:
   - mastodon.py=1.8.0
   - requests
   - progressbar
+  - pillow=9.4
   - pip
   - pip:
     - python-magic==0.4.27
