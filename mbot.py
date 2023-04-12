@@ -74,8 +74,19 @@ if __name__ == "__main__":
 
     # First, post the media.
     media = m.media_post(image)
+    # Second, do some...flavoring.
+    if dt > 30:
+        text = "days until Tears of the Kingdom."
+    elif dt > 20:
+        text = "days until Tears of the Kingdom!"
+    elif dt > 10:
+        text = "DAYS UNTIL TEARS OF THE KINGDOM!!!"
+    else:
+        # it's the final countdowwwwwn
+        ahhs = (10 - dt + 1) * 2 + random.randint(1, (10 - dt + 2))
+        text = f"DAYS UNTIL TEARS OF THE KINGDOM {'A' * ahhs}"
     # Then, post the update.
-    post = m.status_post(f"{dt} days until Tears of the Kingdom.", 
+    post = m.status_post(f"{dt} {text}.", 
                          media_ids = media, 
                          sensitive = True if media is not None else False)
 
