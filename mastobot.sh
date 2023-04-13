@@ -11,6 +11,7 @@
 #export CLIENT_SECRET=your_client_secret
 #export ACCESS_TOKEN=your_access_token
 
+git pull    # MIRACULOUS.
 python download.py -k "zelda totk screenshots" -n 40
 python mbot.py \
     -k $CLIENT_KEY \
