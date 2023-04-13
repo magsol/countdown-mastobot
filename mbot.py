@@ -80,13 +80,14 @@ if __name__ == "__main__":
     elif dt > 20:
         text = "days until Tears of the Kingdom!"
     elif dt > 10:
-        text = "DAYS UNTIL TEARS OF THE KINGDOM!!!"
+        excls = random.randint(1, 10)
+        text = f"DAYS UNTIL TEARS OF THE KINGDOM!{'!' * excls}"
     else:
         # it's the final countdowwwwwn
         ahhs = (10 - dt + 1) * 2 + random.randint(1, (10 - dt + 2))
-        text = f"DAYS UNTIL TEARS OF THE KINGDOM {'A' * ahhs}"
+        text = f"DAYS UNTIL TEARS OF THE KINGDOM {'A' * ahhs}H"
     # Then, post the update.
-    post = m.status_post(f"{dt} {text}.", 
+    post = m.status_post(f"{dt} {text}", 
                          media_ids = media, 
                          sensitive = True if media is not None else False)
 
