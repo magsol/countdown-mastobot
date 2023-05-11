@@ -46,6 +46,8 @@ if __name__ == "__main__":
     target = datetime(year = 2023, month = 5, day = 12)
     dt = (target - now).days + 1 # the "+1" is to round up, since there are still some hours left
     #print(f"{dt} days until Tears of the Kingdom")
+    if dt < 0: # sanity check
+        quit("The day is passed. Maybe stop running this job?")
 
     ### Step 2: pick an image and upload it to Mastodon.
     # https://mastodonpy.readthedocs.io/en/stable/05_statuses.html#mastodon.Mastodon.media_post
@@ -82,10 +84,14 @@ if __name__ == "__main__":
     elif dt > 10:
         excls = random.randint(1, 10)
         text = f"DAYS UNTIL TEARS OF THE KINGDOM!{'!' * excls}"
-    else:
+    elif dt > 0:
         # it's the final countdowwwwwn
         ahhs = (10 - dt + 1) * 2 + random.randint(1, (10 - dt + 2))
-        text = f"DAYS UNTIL TEARS OF THE KINGDOM {'A' * ahhs}H"
+        S = "S" if dt > 1 else ""
+        text = f"DAY{S} UNTIL TEARS OF THE KINGDOM {'A' * ahhs}H"
+    elif dt == 0:
+        # YAAAAY
+        text = "days. It's finally time. It's finally here. Tears of the Kingdom is out!"
     # Then, post the update.
     post = m.status_post(f"{dt} {text}", 
                          media_ids = media, 
